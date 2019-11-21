@@ -2,47 +2,40 @@ let Parser = require('rss-parser');
 let parser = new Parser();
 let fs = require('fs')
 let lastItem
-fs.readFile('lastitem.json', 'utf8', function(err, contents) {
-    lastItem = JSON.parse(contents)
+let postsFound = []
+fs.readFile('lastitem.json', 'utf8', function(err, content) {
+    if(content) {
+        lastItem = JSON.parse(content)
+    }
+});
+fs.readFile('postsFound.json', 'utf8', function(err, content) {
+    if(content) {
+        let posts = JSON.parse(content)
+        postsFound = posts.posts
+        console.log(postsFound)
+    }
 });
 
 // let lastDay = new Date(getFullYear() + "-" + getMonth() + "-" + getDate())
 
 setInterval(async () => {
-    let feed = await parser.parseURL('https://www.vadso.kommune.no/ArtikkelRSS.ashx?NyhetsKategoriId=9&Spraak=Norsk');
-    if(!lastItem) {
+    //test with reddit
+    let feed = await parser.parseURL('https://www.reddit.com/.rss');
+    if(!lastItem || lastItem.id != feed.items[0].id) {
+        console.log("OPPDATERING: " + Date.now())
         lastItem = feed.items[0]
-        // console.log(JSON.stringify(lastItem))
         fs.writeFileSync("lastitem.json", JSON.stringify(lastItem))
+        postsFound.push(feed.items[0])
+        fs.writeFileSync("postsFound.json", '{"posts": ' + JSON.stringify(postsFound) + '}')
     }
-    if(lastItem.guid != feed.items[0].guid) {
-        console.log("True")
-    }
-    else {
-        console.log("False")
-    }
-
-    // let today = new Date(getFullYear() + "-" + getMonth() + "-" + getDate())
-    // let feedArray = []
-
-    // feed.items.forEach(item => {
-
-    //     let today = new Date(getFullYear() + "-" + getMonth() + "-" + getDate())
-    //     if(lastDay != today) {
-    //         feedArray.clear()
-    //         lastday = today
-    //     }
-
-    //     let now = new Date();
-    //     let d = new Date(item.isoDate)
-        
-    //     let d1 = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate()
-    //     let d2 = now.getFullYear() + "-" + now.getMonth() + "-" + now.getDate()
-        
-    //     if((d1 === d2) && (d.getMinutes >= now.getMinutes-5) && (true))
-    //     {
-    //         console.log(item)
-    //     }  
-    // })
-
-}, 1800);
+    
+    //target feed for program
+    // let feed = await parser.parseURL('https://www.vadso.kommune.no/ArtikkelRSS.ashx?NyhetsKategoriId=9&Spraak=Norsk');
+    // if(!lastItem || lastItem.guid != feed.items[0].guid) {
+    //     console.log("OPPDATERING: " + Date.now())
+    //     lastItem = feed.items[0]
+    //     fs.writeFileSync("lastitem.json", JSON.stringify(lastItem))
+    //     postsFound.push(feed.items[0])
+    //     fs.writeFileSync("postsFound.json", '{"posts": ' + JSON.stringify(postsFound) + '}')
+    // }
+}, 60000);
