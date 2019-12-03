@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "config": "^3.2.4",
-    "express": "^4.17.1",
-    "handlebars": "^4.5.3",
+    "bitly": "^6.1.0",
+    "dotenv": "^8.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
-    "rss-parser": "^3.7.3"
+    "rss-parser": "^3.7.3",
+    "sqlite3": "^4.1.0",
+    "twit": "^2.2.11"
   },
   "devDependencies": {},
   "scripts": {
