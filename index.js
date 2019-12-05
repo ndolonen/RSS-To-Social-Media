@@ -81,11 +81,11 @@ async function postToSocialMedia(link, title, post_id) {
   }
 
   //Twitter
-  // let twitter_id
-  // T.post('statuses/update', { status: linkStr }, function(err, data, response) {
-  //   twitter_id = data.id_str
-  // })
-  // insertPost(post_id, title, fb_id, twitter_id)
+  let twitter_id
+  T.post('statuses/update', { status: linkStr }, function(err, data, response) {
+    twitter_id = data.id_str
+  })
+  insertPost(post_id, title, fb_id, twitter_id)
 }
 
 //Gets the last field in the DB
