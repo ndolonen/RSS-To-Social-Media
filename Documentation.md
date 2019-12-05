@@ -19,7 +19,7 @@ PM2 or other daemonizing packages
 > sudo find /www -type d -exec chmod 2770 {} \;  
 > cd /www  
 * insert code into directory
-> git clone https://www.github.com/ndolonen/RSSfetcher
+> git clone https://www.github.com/ndolonen/RSS-To-Social-Media.git
 * cd into your directory 
 * npm install
 * create the .env file from the .env.example layout
