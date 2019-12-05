@@ -12,14 +12,14 @@ PM2 or other daemonizing packages
 
 #install
 * Create Directory and put rights that makes it editable without sudo rights
-> mkdir /www
-> sudo gpasswd -a "$USER" www-data
-> sudo chown -R "$USER":www-data /www
-> find /www -type f -exec chmod 0660 {} \;
-> sudo find /www -type d -exec chmod 2770 {} \;
-> cd /www
+> mkdir /www  
+> sudo gpasswd -a "$USER" www-data  
+> sudo chown -R "$USER":www-data /www  
+> find /www -type f -exec chmod 0660 {} \;  
+> sudo find /www -type d -exec chmod 2770 {} \;  
+> cd /www  
 * insert code into directory
-> git clone https://www.github.com/ndolonen/RSSfetcher
+> git clone https://www.github.com/ndolonen/RSS-To-Social-Media.git
 * cd into your directory 
 * npm install
 * create the .env file from the .env.example layout
