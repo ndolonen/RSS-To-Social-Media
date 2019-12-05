@@ -45,7 +45,7 @@ setInterval(async () => {
     console.log("New post: " + new Date().getTime())
     postToSocialMedia(feed.items[0].link, feed.items[0].title, feed.items[0].guid)
   }
-}, 60000)
+}, 3000)
 
 async function postToSocialMedia(link, title, post_id) {
 
@@ -61,23 +61,31 @@ async function postToSocialMedia(link, title, post_id) {
     if(err){
         writeError("URL", err)
     }
+    if(req.error){
+      writeError("API", req.error.message)
+    }
     fb_id = JSON.parse(req).id
   })
 
+  let bitlyLink
+  let linkStr = title + " " + link
   //Get a bitly link for twitter
-  let result
-  try {
-    result = await bitly.shorten(link)
-  } catch(e) {
-    writeError("URL", err)
+  if( linkStr.length >= 280 )
+  {
+    try {
+      bitlyLink = await bitly.shorten(link)
+    } catch(e) {
+      writeError("URL", err)
+    }
+    linkStr = titlle + " " + bitlyLink.url
   }
 
   //Twitter
-  let twitter_id
-  T.post('statuses/update', { status: title + " " + result.url }, function(err, data, response) {
-    twitter_id = data.id_str
-  })
-  insertPost(post_id, title, fb_id, twitter_id)
+  // let twitter_id
+  // T.post('statuses/update', { status: linkStr }, function(err, data, response) {
+  //   twitter_id = data.id_str
+  // })
+  // insertPost(post_id, title, fb_id, twitter_id)
 }
 
 //Gets the last field in the DB
@@ -148,6 +156,7 @@ REA = Read
 CON = Connect
 CLO = Close
 URL = URL
+API = API
 
 */
 function writeError(source, error) {
