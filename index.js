@@ -68,16 +68,17 @@ async function postToSocialMedia(link, title, post_id) {
   })
 
   let bitlyLink
-  let linkStr = title + " " + link
+
+  let linkStr = ""// title + " " + link
   //Get a bitly link for twitter
-  if( linkStr.length >= 279 )
+  if( !linkStr || linkStr.length >= 279 )
   {
     try {
       bitlyLink = await bitly.shorten(link)
     } catch(e) {
       writeError("URL", err)
     }
-    linkStr = titlle + " " + bitlyLink.url
+    linkStr = title + " " + bitlyLink.url
   }
 
   //Twitter
